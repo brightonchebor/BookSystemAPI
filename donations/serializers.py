@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models Book, MonetaryDonation, DonationCampaign
+from .models import Book, MonetaryDonation, DonationCampaign
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,4 +17,4 @@ class BookSerializer(serializers.ModelSerializer):
             class Meta:
                 model = DonationCampaign
                 fields = '__all__'
-                
+
