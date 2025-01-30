@@ -7,7 +7,7 @@ class BookSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('donor', 'timestamp')
 
-    class MonetarySerializer(serializers.ModelSerializer):
+    class MonetaryDonationSerializer(serializers.ModelSerializer):
         class Meta:
             model = MonetaryDonation
             fields = '__all__'
