@@ -10,8 +10,8 @@ AUTH_PROVIDERS = {'email':'email', 'google':'google', 'github':'github', 'facebo
 class User(AbstractBaseUser, PermissionsMixin):
 
     CHOICES = (
-        ('manager', 'Manager'),
-        ('teacher', 'Teacher'),
+        ('donor', 'Donor'),
+        ('recipient', 'Recipient'),
         ('admin', 'Admin')
     )
     email = models.EmailField(max_length=255, unique=True, verbose_name=_("Email Address"))
