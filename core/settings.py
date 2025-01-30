@@ -129,3 +129,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MPESA_CONSUMER_KEY = 'your_consumer_key'
+MPESA_CONSUMER_SECRET = 'your_consumer_secret'
+MPESA_SHORTCODE = 'your_shortcode'
+MPESA_PASSKEY = 'your_passkey'
+MPESA_CALLBACK_URL = 'https://yourdomain.com/callback'

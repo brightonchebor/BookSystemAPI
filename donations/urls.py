@@ -10,5 +10,5 @@ urlpatterns = [
     path('api/donations/books/<int:pk>/', BookDonationDetailView.as_view(), name='book-donation-detail'),
     path('api/donations/books/<int:pk>/delete/', BookDonationDeleteView.as_view(),name='book-donation-delete'),
     path('api/donations/money/', MonetaryDonationCreateView.as_view(), name='monetary-donation-create'),
-    path('api/donations/campaigns/', DeprecationWarning.as_view(), name='donation-campaign-list'),
+    path('api/donations/campaigns/', DonationCampaignListView.as_view(), name='donation-campaign-list'),
 ]

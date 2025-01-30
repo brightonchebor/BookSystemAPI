@@ -30,7 +30,7 @@ class MonetaryDonation(models.Model):
      timestamp = models.DateTimeField(default=timezone.now)
 
      def __str__(self):
-          return f"{self.donor.username} - {self.amount}"
+         return f"{self.donor.username} - {self.amount}"
     
 class DonationCampaign(models.Model):
      title = models.CharField(max_length=200)
