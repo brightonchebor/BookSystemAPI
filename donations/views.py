@@ -3,6 +3,7 @@ from rest_framework import generics, permissions
 from .models import Book,MonetaryDonation,DonationCampaign
 from .serializers import BookSerializer,MonetaryDonationSerializer,DonationCampaignSerializer
 
+
 class BookDonationCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -39,3 +40,5 @@ class MonetaryDonationCreateView(generics.CreateAPIView):
 class DonationCampaignListView(generics.ListAPIView):
     queryset = DonationCampaign.objects.all()
     serializer_class = DonationCampaignSerializer
+
+    
