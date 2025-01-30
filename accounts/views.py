@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import smart_str, DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from .models import User, OneTimePassword, Geofence
+from .models import User, OneTimePassword
 from rest_framework.exceptions import NotFound
 
 
