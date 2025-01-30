@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, Group
 from rest_framework_simplejwt.tokens import RefreshToken
 from .managers import UserManager
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 
 AUTH_PROVIDERS = {'email':'email', 'google':'google', 'github':'github', 'facebook':'facebook'}
@@ -57,3 +58,25 @@ class OneTimePassword(models.Model):
 
     def __srt__(self):
         return f'{self.user.first_name}-passcode'    
+    
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
+    phone_number = models.CharField(max_length=15, null=True, blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+
+    # Role-specific fields
+    donation_history = models.JSONField(null=True, blank=True)  # For donors
+    books_exchanged = models.JSONField(null=True, blank=True)  # For recipients
+    preferred_genres = models.CharField(max_length=255, null=True, blank=True)  # For both donor and recipient
+    impact_metrics = models.JSONField(null=True, blank=True)  # For donors
+
+    def __str__(self):
+        return f"Profile of {self.user.get_full_name()}"
+    
+    def save(self, *args, **kwargs):
+        if self.user.role == 'donor' and not self.donation_history:
+            self.donation_history = []  # Initialize empty list for donors
+        elif self.user.role == 'recipient' and not self.books_exchanged:
+            self.books_exchanged = []  # Initialize empty list for recipients
+        super().save(*args, **kwargs)    

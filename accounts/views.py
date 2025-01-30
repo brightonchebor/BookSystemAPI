@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import GenericAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.views import APIView
+from rest_framework import viewsets
 
 from .serializers import *
 
@@ -175,3 +176,34 @@ class LogoutUserView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class ProfileCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = ProfileCreateSerializer(data=request.data, context={'user': request.user})
+        if serializer.is_valid():
+            profile = serializer.save()
+            return Response(ProfileCreateSerializer(profile).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProfileUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, user):
+        try:
+            return Profile.objects.get(user=user)
+        except Profile.DoesNotExist:
+            return None
+
+    def put(self, request):
+        profile = self.get_object(request.user)
+        if not profile:
+            return Response({"detail": "Profile not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ProfileUpdateSerializer(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            profile = serializer.save()
+            return Response(ProfileUpdateSerializer(profile).data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 

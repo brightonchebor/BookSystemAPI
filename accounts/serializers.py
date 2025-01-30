@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Profile
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -150,3 +150,42 @@ class LogoutUsererializer(serializers.Serializer):
             token.blacklist()
         except TokenError:
             return self.fail('bad_token')  
+        
+
+    
+class ProfileCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['phone_number', 'address', 'profile_picture']
+
+    def create(self, validated_data):
+        user = self.context.get('user')
+        profile = Profile.objects.create(user=user, **validated_data)
+        
+        # You can add logic for role-specific fields
+        if user.role == 'donor':
+            profile.donation_history = []
+        elif user.role == 'recipient':
+            profile.books_exchanged = []
+
+        profile.save()
+        return profile
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['phone_number', 'address', 'profile_picture']
+
+    def update(self, instance, validated_data):
+        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        instance.address = validated_data.get('address', instance.address)
+        instance.profile_picture = validated_data.get('profile_picture', instance.profile_picture)
+        
+        # Add logic to handle role-specific updates if necessary
+        if instance.user.role == 'donor':
+            instance.donation_history = validated_data.get('donation_history', instance.donation_history)
+        elif instance.user.role == 'recipient':
+            instance.books_exchanged = validated_data.get('books_exchanged', instance.books_exchanged)
+
+        instance.save()
+        return instance    
