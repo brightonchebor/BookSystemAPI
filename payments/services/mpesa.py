@@ -1,7 +1,7 @@
 import requests
 import json
 from datetime import datetime
-import bases64
+import base64
 from django.conf import settings
 
 def get_access_token():
@@ -12,7 +12,7 @@ def get_access_token():
 def generate_password():
     timespan = datetime.now().strftime('%Y%m%d%H%M%S%')
     password = f"{settings.MPESA_SHORTCODE}{settings.MPESA_PASSKEY}{timespan}"
-    return bases64.b64encode(password.encode()).decode()
+    return base64.b64encode(password.encode()).decode()
 
 def initiate_stk_push(phone_number, amount):
     access_token = get_access_token()

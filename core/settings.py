@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -131,9 +132,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+#payment settingds
 MPESA_CONSUMER_KEY = 'your_consumer_key'
 MPESA_CONSUMER_SECRET = 'your_consumer_secret'
 MPESA_SHORTCODE = 'your_shortcode'
 MPESA_PASSKEY = 'your_passkey'
 MPESA_CALLBACK_URL = 'https://yourdomain.com/callback'
+
+PAYPAL_MODE = os.environ.get('PAYPAL_MODE', 'sandbox')
+PAYPAL_CLIENT_ID = 'your-client-id'
+PAYPAL_CLIENT_SECRET = 'your-client-secret'
+
+STRIPE_SECRET_KEY = 'your_secret_key_here'
