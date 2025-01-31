@@ -3,4 +3,4 @@ from django.http import HttpResponse
 
 
 def home(request):
-    return HttpResponse("Welcome to the Book Donation App!")
+    return HttpResponse("<h1>Welcome to the Book Donation App!</h1>")
