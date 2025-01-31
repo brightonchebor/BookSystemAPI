@@ -7,6 +7,8 @@ from rest_framework.filters import SearchFilter
 from geopy.distance import geodesic
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 class BookListCreateView(generics.ListCreateAPIView):
@@ -32,7 +34,17 @@ class ExchangeRequestCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         book_id = self.kwargs.get('id')
         book = Book.objects.get(id=book_id)
+        requester =self.request.user
         serializer.save(requester=self.request.user, book=book)
+        subject = f"New Exchange Request for {book.title}"
+        message = f"{requester.username} hass requested to exchange your book: {book.title}.\n\Message: {serializer.validated_data.get('message', '')}"
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [book.uploaded_by.email],
+            fail_silently=False,
+        )
 
 class NearbyBooksView(APIView):
     def get(self, request):
