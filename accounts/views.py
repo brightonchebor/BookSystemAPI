@@ -30,15 +30,15 @@ def index(request):
 class UserRegisterView(GenericAPIView):
     serializer_class = UserRegisterSerializer
 
-    @swagger_auto_schema(operation_summary='Register a user(Teacher/Manager/Admin).')
+    @swagger_auto_schema(operation_summary='Register a user(Donor/Recipient/Admin).')
     def post(self, request):
         user_data = request.data
         role = user_data.get('role')
 
-        if role=='manager':
-            if User.objects.filter(role='manager').exists():
+        if role=='admin':
+            if User.objects.filter(role='admin').exists():
                 return Response({
-                    'message':'Only one manager is allowed'
+                    'message':'Only one admin is allowed'
                 } ,status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.serializer_class(data=user_data)
@@ -50,7 +50,7 @@ class UserRegisterView(GenericAPIView):
             #send email function user['email']
             return Response({
                 'data':user,
-                'message':f'hi {user["first_name"]} thanks for signing up as RiseKenya {user["role"]}, a passcode has been sent to your email',
+                'message':f'hi {user["first_name"]} thanks for signing up as a {user["role"]}, a passcode has been sent to your email',
               }, status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
