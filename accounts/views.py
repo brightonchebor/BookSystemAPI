@@ -50,7 +50,7 @@ class UserRegisterView(GenericAPIView):
             #send email function user['email']
             return Response({
                 'data':user,
-                'message':f'hi {user["first_name"]} thanks for signing up as a {user["role"]}, a passcode has been sent to your email',
+                'message':f'Hi {user["last_name"]} thanks for signing up as a {user["role"]}, a passcode has been sent to your email',
               }, status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
