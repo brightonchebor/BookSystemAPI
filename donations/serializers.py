@@ -14,7 +14,11 @@ class MonetaryDonationSerializer(serializers.ModelSerializer):
             read_only_fields = ('donor', 'timestamp')
 
 class DonationCampaignSerializer(serializers.ModelSerializer):
+            total_amount_raised = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+
             class Meta:
                 model = DonationCampaign
-                fields = '__all__'
+                fields = ['id', 'title','description','target_amount','current_amount','total_amount_raised']
 
+            def get_total_amount_raised(self, obj):
+                  return obj.current_amount()

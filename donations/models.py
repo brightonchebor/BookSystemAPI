@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from datetime import timedelta
 
 class Book(models.Model):
      condition_choices = [
@@ -31,17 +32,24 @@ class MonetaryDonation(models.Model):
 
      def __str__(self):
          return f"{self.donor.username} - {self.amount}{self.payment_gateway}"
-    
+
+
+ 
 class DonationCampaign(models.Model):
      title = models.CharField(max_length=200)
      description = models.TextField()
      target_amount = models.DecimalField(max_digits=10, decimal_places=2)
      current_amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
      start_date = models.DateTimeField(default=timezone.now)
-     end_date = models.DateTimeField()
+     end_date = models.DateTimeField(null=True, blank=True)
 
+     def save(self, *args, **kwargs):
+          if not self.end_date:
+               self.end_date = self.start_date + timedelta(days=30)
+          super().save(*args, **kwargs)
      def __str__(self):
           return self.title
+     
 
 
      

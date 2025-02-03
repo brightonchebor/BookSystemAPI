@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (
-    BookDonationCreateView, BookDonationListView, BookDonationDetailView, BookDonationDeleteView, MonetaryDonationCreateView, DonationCampaignListView
+    BookDonationCreateView, BookDonationListView, BookDonationDetailView, BookDonationDeleteView, MonetaryDonationCreateView, DonationCampaignCreateView, DonationCampaignListView
 )
 
 
@@ -11,4 +11,5 @@ urlpatterns = [
     path('api/donations/books/<int:pk>/delete/', BookDonationDeleteView.as_view(),name='book-donation-delete'),
     path('api/donations/money/', MonetaryDonationCreateView.as_view(), name='monetary-donation-create'),
     path('api/donations/campaigns/', DonationCampaignListView.as_view(), name='donation-campaign-list'),
+    path('api/donations/campaigns/create/', DonationCampaignCreateView.as_view(), name='campaign-create'),
 ]
