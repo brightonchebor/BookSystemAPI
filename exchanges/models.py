@@ -16,6 +16,13 @@ class Book(models.Model):
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"Request for {self.book.title} by {self.requester.username}"
+        return f"Request for {self.title} by {self.author}"
 
 
+class ExchangeRequest(models.Model):
+    book = models.ForeignKey("Book", on_delete=models.CASCADE)
+    requester = models.CharField(max_length=255)
+    status = models.CharField(max_length=50, choices=[("pending", "Pending"), ("approved", "Approved"), ("rejected", "Rejected")])
+
+    def __str__(self):
+        return f"{self.requester} - {self.book.title}"
